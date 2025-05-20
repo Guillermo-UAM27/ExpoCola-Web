@@ -80,10 +80,9 @@ function removeLastFromQueue() {
     .then(data => {
         if (data.status === 'success') {
             attendedCount++;
-            hablar(`El paciente atendido número ${attendedCount} será ${data.paciente}`);
             actualizarCola(data.cola);
         } else {
-            alert(data.message || 'Error al atender el paciente');
+            alert(data.message || 'Error al eliminar el paciente');
         }
     })
     .catch(error => {
@@ -122,7 +121,11 @@ function atender() {
     .then(data => {
         if (data.status === 'success') {
             attendedCount++;
-            hablar(`El paciente atendido número ${attendedCount} será ${data.paciente}`);
+            let announcement = `El paciente atendido número ${attendedCount} será ${data.paciente}`;
+            if (data.cola.length > 0) {
+                announcement += `. El siguiente paciente es ${data.cola[0]}`;
+            }
+            hablar(announcement);
             actualizarCola(data.cola);
         } else {
             alert(data.message || 'Error al atender');
